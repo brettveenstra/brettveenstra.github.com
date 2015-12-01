@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Unit Testing in SQL Server - Overview - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Unit Testing in SQL Server - Overview</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Ok, so here’s the first in a series of a home grown implementation of Unit Testing <span class="caps">SQL</span> server&nbsp;code.</p>
+<p>I’m not talking about using <a href="http://msdn.microsoft.com/en-us/vstudio/default.aspx">Visual Studio Team Edition for Professionals</a>, like <a href="http://www.codinghorror.com/blog/2006/12/is-your-database-under-version-control.html">Jeff recommends</a>… but I’ll try to provide a general approach to testing your <span class="caps">SQL</span> code, particularly stored procedures (sprocs).<span class="more"></span></p>
+<p>In <span class="caps">SQL</span> processing, we have our classic <a href="http://en.wikipedia.org/wiki/Create,_read,_update_and_delete"><span class="caps">CRUD</span> operations</a>, and those operations are impacted by combinations of <strong>existing data</strong> elsewhere in other columns, tables, databases, or servers.  This is the single biggest challenge in the test as I see&nbsp;it.</p>
+<p>Admittedly, I’m making the most of my current database architecture in this solution, and yet, I am having trouble imaging this not being a universal&nbsp;approach.</p>
+<p>In my application to test, we are essentially a high-calculation, low-user interface <span class="caps">SQL</span> business engine.  The calculations are all done in sprocs and they have been broken down into “blocks” of results.  That is, Calculation B, will possibly take data results of Calculation&nbsp;A.</p>
+<p>So here’s a basic diagram of this&nbsp;setup:</p>
+<p><a href="http://www.flickr.com/photos/brettveenstra/1814789859/" title="Photo Sharing">
+<img src="http://farm3.static.flickr.com/2232/1814789859_8026282ac0.jpg" alt="Testing SQL DBs"></a></p>
+<p>This approach allows a myriad of unit testing possibilities, but here’s my general&nbsp;approach.</p>
+<p>Using <a href="http://nunit.org/">NUnit</a>, each Calculation would have it’s own <code>TestFixture</code> and the <code>TestFixtureSetup</code> would execute the sproc.  The <code>TestFixtureSetup</code> would also retrieve any external data that the calculation would need into member variables for the&nbsp;fixture.</p>
+<p>Then, each of the Test’s would look into any external data, <span class="caps">WIP</span> table(s) and final Calc table(s) to determine if it passed or&nbsp;not.</p>
+<p>This is my first toe in the <span class="caps">TDD</span> pond for SQL&nbsp;applications.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

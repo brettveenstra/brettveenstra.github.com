@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Running KeePass 2.x on OSX using macpack - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Running KeePass 2.x on OSX using macpack</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Last year, I finally declared password bankruptcy and found a password manager&nbsp;that:</p>
+<ul>
+<li>would integrate with FireFox, or at least import existing&nbsp;passwords</li>
+<li>is open source (security programs that cannot demonstrate how they are safeguarding your info should not be&nbsp;trusted)</li>
+<li>is cross-platform capable (WinXP, Win7, <span class="caps">OSX</span>,&nbsp;Linux)</li>
+</ul>
+<p>Fortunately, I found <span class="more"></span><a href="http://www.keepass.info">KeePass</a>.  It can run using Mono under <span class="caps">OSX</span>, but it can be a hassle to run.  The default way of doing that&nbsp;is:</p>
+<ul>
+<li>Open Terminal and navigate to KeePass&nbsp;directory</li>
+<li>Typing: <code>mono KeePass.exe</code></li>
+</ul>
+<p>We can do&nbsp;this:</p>
+<ul>
+<li>Install <a href="http://www.go-mono.com/mono-downloads/download.html">Mono&nbsp;Framework</a></li>
+<li>Download latest version of KeePass 2.x and unpack&nbsp;it</li>
+<li>Open Terminal and navigate to unpacked KeePass&nbsp;folder</li>
+<li>Run the following&nbsp;command:</li>
+</ul>
+<pre><code class="lang-terminal">    macpack -o:. -m:winforms -r:/Library/Frameworks/Mono.framework/Versions/Current/lib/ libCocoaSharpGlue.dylib -r:KeePass.chm -r:KeePass.XmlSerializers.dll -r:KeePassLibC32.dll -r:KeePassLibC64.dll -r:License.txt -r:ShinstUtil.exe -r:./XSL -n:KeePass -a:KeePass.exe
+</code></pre>
+<p>This will create a KeePass.app file that you can drag into your <code>\Applications</code> folder, and you should be all&nbsp;set.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

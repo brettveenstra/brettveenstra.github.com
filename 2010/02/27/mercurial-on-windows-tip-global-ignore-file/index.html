@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Mercurial on Windows Tip Global Ignore File - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Mercurial on Windows Tip Global Ignore File</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>If you’re using <a href="http://tortoisehg.bitbucket.org/">TortoiseHg</a>, (if you’re not, you should stop reading now to go install it), in your default installation you <span class="more"></span>should put your <code>Mercurial.ini</code> file in your <code>%userprofile%</code> folder.</p>
+<p>Make your <code>[ui]</code> section edits to point to a file (name is up to&nbsp;you):</p>
+<pre><code>[ui]
+...
+ignore = %userprofile%\.hgignore
+...
+</code></pre><p>Finally, make sure you have an <code>.hgignore</code> compatible file.  This is what I’m using right&nbsp;now:</p>
+<pre><code>syntax: glob
+*.o
+*.lo
+*.la
+#*#
+.*.rej
+*.rej
+.*~
+*~
+.#*
+.DS_Store
+*.suo
+*.user
+*.webinfo
+[Bb]in
+*/[Bb]in
+[Oo]bj
+*/[Oo]bj
+*.[Bb][Aa][Kk]
+*.~??
+*[Tt][Mm][Pp]
+_vti_txt
+*/_vti_txt
+_vti_script
+*/_vti_script
+_vti_pvt
+*/_vti_pvt
+_vti_cnf
+*/_vti_cnf
+_private
+*/_private
+.~*
+*.~*
+[Rr]elease
+*/[Rr]elease
+[Dd]ebug
+*/[Dd]ebug
+[Aa]nkh.[Ll]oad
+*/_ReSharper*
+_ReSharper*
+*resharper*
+*.Cache
+*.StyleCop
+*.ReSharper
+obj/
+bin/
+*.ncb
+*.suo
+_ReSharper.*
+*.resharper.user
+</code></pre></section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Gotcha of inline Document Ready function for JQuery - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Gotcha of inline Document Ready function for JQuery</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>I’ve had some reasons to use JQuery this week, and you should believe whatever good rumors and hype you’ve heard about this library.  It’s&nbsp;amazing.</p>
+<p>There are <a href="http://roshanbh.com.np/2008/03/jquery-benefits-examples-free-ebook.html">many benefits to a Javascript framework</a>, particularly <a href="http://jquery.com">JQuery</a>.  Take this example that I put inside my <code>&lt;head\&gt;</code> element:</p>
+<pre><code class="lang-Javascript">&lt;script type=<span class="string">"text/javascript"</span>&gt;
+    $(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
+        $(<span class="string">'#deliciouslogin'</span>).submit(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
+            alert(<span class="string">"This to authenticate with Delicious and start retrieving Bookmarks into Google Gears  database"</span>);
+        })
+    });
+<span class="xml"><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre>
+<h2 id="goodness">Goodness</h2>
+<p>This is the <a href="http://docs.jquery.com/How_jQuery_Works#.24.28document.29.ready.28function.28.29.7B.7D.29.3B">“Document Ready”</a> function.  This solves the problem of running your Javascript code before your page is done rendering on the browser.  Also note how easy it is to hookup an “onsubmit” event handler.  You use <span class="caps">CSS</span>-selectors to identify what HTML element(s) to apply to, and JQuery does the rest, figuring out the best way to accomplish that <strong>regardless of your browser</strong>.  Great&nbsp;fun.</p>
+<h2 id="problems-appear">Problems&nbsp;Appear</h2>
+<p>My elation quickly disappeared when I fired this sample up in FireFox 3, nothing happened when my <code>&lt;form\&gt;&#39;s</code> submit button was triggered.  Frustrated, I quickly tried it in Safari (Mac), it worked fine.  I switched to the <span class="caps">PC</span> and grumpy IE6, and again, no luck.  So what’s going&nbsp;on?</p>
+<p>It turns out that the inline JavaScript will be ignored if you close the element just prior in your <code>&lt;head\&gt;</code> section with the shorthand closetag <code>/&gt;</code>.</p>
+<p>This doesn’t&nbsp;work:</p>
+<pre><code class="lang-Javascript">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"lib/jquery/jquery.js"</span> /&gt;
+<span class="xml"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    $(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
+        <span class="comment">// blah</span>
+        })
+    });
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre>
+<p>This does&nbsp;work:</p>
+<pre><code class="lang-Javascript">&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"lib/jquery/jquery.js"</span>&gt;<span class="xml"><span class="tag">&lt;/<span class="title">script</span>&gt;</span>
+<span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span>&gt;</span><span class="javascript">
+    $(<span class="built_in">document</span>).ready(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>{
+        <span class="comment">// blah</span>
+        })
+    });
+</span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span>
+</code></pre>
+<p>Hopefully I will remember this in the future, as this is now the <strong>second time</strong> in two days wondering why my Javascript wasn’t&nbsp;activated.</p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

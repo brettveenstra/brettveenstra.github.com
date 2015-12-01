@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Monkey Patching - Find all files in a folder with Ruby - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Monkey Patching - Find all files in a folder with Ruby</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Here is an extension to Ruby’s File class to allow you to search <span class="more"></span>for all files below a specific&nbsp;folder.</p>
+<pre><code class="lang-Ruby"><span class="class"><span class="keyword">class</span> <span class="title">File</span></span>
+    <span class="keyword">begin</span>
+        <span class="function"><span class="keyword">def</span> <span class="title">self</span>.<span class="title">find</span><span class="params">(dir, filename=<span class="string">"*.*"</span>, subdirs=<span class="keyword">true</span>)</span></span>
+            <span class="constant">Dir</span>[ subdirs ? <span class="constant">File</span>.join(dir.split(<span class="regexp">/\\/</span>), <span class="string">"**"</span>, filename) <span class="symbol">:</span> <span class="constant">File</span>.join(dir.split(<span class="regexp">/\\/</span>), filename) ].select { |x| <span class="constant">File</span>.file?(x) }
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</code></pre>
+<p>Ruby is amazing that you can Monkey Patch code.  Having just started with Ruby yesterday, and I’m sure I’ll find a better to do this in the future, but for now, this is the best I have.  This started from <a href="http://snippets.dzone.com/posts/show/5457">a simple script</a>.  Notice the little juice at the end that only returns “real files” according to the <a href="http://ruby-doc.org/core/classes/File.html">File <span class="caps">API</span></a>, now it behaves&nbsp;nicely.</p>
+<pre><code class="lang-Ruby">sqlfiles = <span class="constant">File</span>.find(<span class="constant">Dir</span>.pwd, <span class="string">"*.sql"</span>)
+</code></pre>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

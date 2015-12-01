@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>NAnt - really? - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>NAnt - really?</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>So I’m looking at taking <a href="http://codebetter.com/blogs/jean-paul_boodhoo/archive/2007/10/01/directory-structure-for-projects.aspx" title="CodeBetter.Com - Directory Structure for Projects"><span class="caps">JPB</span>’s advice on a Visual Studio project setup</a> and his reference to using NAnt for his normal builds<span style="text-decoration: line-through;"> - even small projects</span>.  I’ve seen reference to NAnt for years now and am still having trouble thinking this is just overkill for a “small” standard project.<span class="more"></span></p>
+<p><span class="more"></span>I’m running a <span class="caps">VS2005</span> project with 8 projects and my compile only takes 3 minutes.  I know people have claimed <strong>orders of magnitude</strong> of build time improvement, but it still seems strange to go through the hassle of creating and maintaining <span class="caps">XML</span> when I decide I need to breakout the project into another assembly…  if this were going the way of Continuous Integration, I could see the benefits there, but would the <code>.build</code> file have to be different on the <span class="caps">CI</span> server (e.g.  SVN Update, clean, test&nbsp;targets).</p>
+<p>What am I missing for the small development&nbsp;project?</p>
+<p><strong>Update: My apologies to <span class="caps">JPB</span> on the assumption he suggested all projects run NAnt.  I’m still curious, is it overkill to use NAnt, Rake, etc for compiling a solution with less than 20 projects / 10,000 lines of&nbsp;code?</strong></p>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

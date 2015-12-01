@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Continuous Integration Gotcha NAnt empty elements - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Continuous Integration Gotcha NAnt empty elements</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>For those of us using the <a href="http://jetbrains.com/teamcity">TeamCity</a> continuous integration tool, I ran across a gotcha this morning that I <strong>will</strong> forget very&nbsp;soon.</p>
+<h2 id="the-problem">The&nbsp;problem</h2>
+<p>When running NAnt script on my local machine “in developer mode”, everything runs fine.  However, once it goes to TeamCity, it puts up a general&nbsp;error:</p>
+<pre><code>&gt; Could not include build file &#39;X:\teamcity-BuildAgent\work\684ab6ff82f1a29a\build\foo.core.build&#39;. 
+&gt; Object reference not set to an instance of an object.
+</code></pre><p>In the end, my offending entry&nbsp;was:</p>
+<pre><code class="lang-XML"><span class="tag">&lt;<span class="title">fileset</span> <span class="attribute">id</span>=<span class="value">"cube.load.files"</span>&gt;</span>
+  <span class="comment">&lt;!-- &lt;include name="${build.mxl.dml.dir}\foo.mxl" asis="true"/&gt; --&gt;</span>
+<span class="tag">&lt;/<span class="title">fileset</span>&gt;</span>
+</code></pre>
+<p>Here’s my NAnt file pattern.  I use a set of local.properties.xml for a development machine.  I also create a buildserver.properties.xml for the TeamCity run.  Then I create a “wrapper” NAnt file that includes both the <span class="caps">CORE</span> build script as well as the <code>*.properties.xml</code> file for the given&nbsp;environment.  </p>
+<p>This has worked very smoothly in the past so this morning it was rather frustrating to receive the error.  The inspiration for this methodology was inspired by <a href="http://blog.jpboodhoo.com/NAntStarterSeries.aspx">Jean-Paul’s excellent NAnt series</a>.  I highly encourage you to check it&nbsp;out.</p>
+<p>Back to the problem… When running under TeamCity, I get a failure to include a build file, but everything works when running on a development&nbsp;machine.</p>
+<h2 id="the-solution">The&nbsp;Solution</h2>
+<p>Remove <span class="caps">EMPTY</span> elements from the XML-formatted NAnt file (or close them using shorthand).  For some reason, it looks as if TeamCity’s NAnt runner is parsing those files before sending them over to NAnt (guessing&nbsp;here).  </p>
+<p>And once I cleaned up this empty element, it worked!  Interesting how this <a href="/2008/09/13/gotcha-of-inline-document-ready-function-for-jquery">yet another reason</a> why <a href="http://http://www.codinghorror.com/blog/archives/001114.html"><span class="caps">XML</span> is the bane of developers</a>.</p>
+<pre><code class="lang-xml">[xml]
+<span class="tag">&lt;<span class="title">fileset</span> <span class="attribute">id</span>=<span class="value">"cube.load.files"</span> /&gt;</span>
+[/xml]
+</code></pre>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

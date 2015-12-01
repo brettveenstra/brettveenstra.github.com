@@ -1,0 +1,857 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Journeyman to Master</title>
+    <atom:link href="http://programmer.brettveenstra.com/feed.xml" rel="self" type="application/rss+xml"></atom:link>
+    <link>http://programmer.brettveenstra.com</link>
+    <description>One programmer's journey on the path</description>
+    <pubDate>Wed, 28 Jul 2010 16:43:48 -0400</pubDate>
+    <generator>Wintersmith - https://github.com/jnordberg/wintersmith</generator>
+    <language>en</language>
+    <item>
+      <title>Monkey Patching - Find all files in a folder with Ruby</title>
+      <link>http://programmer.brettveenstra.com/2010/07/28/monkey-patching-find-all-files-in-a-folder-with-ruby/</link>
+      <pubDate>Wed, 28 Jul 2010 16:43:48 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/07/28/monkey-patching-find-all-files-in-a-folder-with-ruby/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here is an extension to Ruby’s File class to allow you to search &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;for all files below a specific folder.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-Ruby&quot;&gt;&lt;span class=&quot;class&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;File&lt;/span&gt;&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;begin&lt;/span&gt;
+        &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;self&lt;/span&gt;.&lt;span class=&quot;title&quot;&gt;find&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(dir, filename=&lt;span class=&quot;string&quot;&gt;&quot;*.*&quot;&lt;/span&gt;, subdirs=&lt;span class=&quot;keyword&quot;&gt;true&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;
+            &lt;span class=&quot;constant&quot;&gt;Dir&lt;/span&gt;[ subdirs ? &lt;span class=&quot;constant&quot;&gt;File&lt;/span&gt;.join(dir.split(&lt;span class=&quot;regexp&quot;&gt;/\\/&lt;/span&gt;), &lt;span class=&quot;string&quot;&gt;&quot;**&quot;&lt;/span&gt;, filename) &lt;span class=&quot;symbol&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;constant&quot;&gt;File&lt;/span&gt;.join(dir.split(&lt;span class=&quot;regexp&quot;&gt;/\\/&lt;/span&gt;), filename) ].select { |x| &lt;span class=&quot;constant&quot;&gt;File&lt;/span&gt;.file?(x) }
+        &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Ruby is amazing that you can Monkey Patch code.  Having just started with Ruby yesterday, and I’m sure I’ll find a better to do this in the future, but for now, this is the best I have.  This started from &lt;a href=&quot;http://snippets.dzone.com/posts/show/5457&quot;&gt;a simple script&lt;/a&gt;.  Notice the little juice at the end that only returns “real files” according to the &lt;a href=&quot;http://ruby-doc.org/core/classes/File.html&quot;&gt;File API&lt;/a&gt;, now it behaves nicely.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-Ruby&quot;&gt;sqlfiles = &lt;span class=&quot;constant&quot;&gt;File&lt;/span&gt;.find(&lt;span class=&quot;constant&quot;&gt;Dir&lt;/span&gt;.pwd, &lt;span class=&quot;string&quot;&gt;&quot;*.sql&quot;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Bootstrapping Goodness</title>
+      <link>http://programmer.brettveenstra.com/2010/07/19/bootstrapping-goodness/</link>
+      <pubDate>Mon, 19 Jul 2010 09:06:50 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/07/19/bootstrapping-goodness/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s some code from the &lt;code&gt;BootStrapper&lt;/code&gt; that I’ve been rather happy with &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;building WinForms apps lately:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cs&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;public&lt;/span&gt; ApplicationContext &lt;span class=&quot;title&quot;&gt;Initialize&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)
+    &lt;/span&gt;{
+        &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.container.Configure(c =&amp;gt; c.AddRegistry());
+        &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.container.Inject(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.container);
+
+        ApplicationSettings settings = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; AppSettingsParser().Parse(&lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.appSettings);
+        &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.container.Inject(settings);
+
+        &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.attachErrorHandling();
+
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; context = &lt;span class=&quot;keyword&quot;&gt;this&lt;/span&gt;.container.GetInstance();
+        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; context;
+    }
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Of course, you use it something like this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cs&quot;&gt;    &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;private&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Main&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)
+    &lt;/span&gt;{
+
+        Application.EnableVisualStyles();
+        Application.SetCompatibleTextRenderingDefault(&lt;span class=&quot;keyword&quot;&gt;false&lt;/span&gt;);
+
+        &lt;span class=&quot;keyword&quot;&gt;var&lt;/span&gt; context = &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; BootStrapper(ConfigurationManager.AppSettings, &lt;span class=&quot;keyword&quot;&gt;new&lt;/span&gt; Container()).Initialize();
+        Application.Run(context);
+    }
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Running KeePass 2.x on OSX using macpack</title>
+      <link>http://programmer.brettveenstra.com/2010/03/20/running-keepass-2-x-on-osx-using-macpack/</link>
+      <pubDate>Sat, 20 Mar 2010 07:01:33 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/03/20/running-keepass-2-x-on-osx-using-macpack/</guid>
+      <author></author>
+      <description>&lt;p&gt;Last year, I finally declared password bankruptcy and found a password manager that:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;would integrate with FireFox, or at least import existing passwords&lt;/li&gt;
+&lt;li&gt;is open source (security programs that cannot demonstrate how they are safeguarding your info should not be trusted)&lt;/li&gt;
+&lt;li&gt;is cross-platform capable (WinXP, Win7, OSX, Linux)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Fortunately, I found &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;a href=&quot;http://www.keepass.info&quot;&gt;KeePass&lt;/a&gt;.  It can run using Mono under OSX, but it can be a hassle to run.  The default way of doing that is:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Open Terminal and navigate to KeePass directory&lt;/li&gt;
+&lt;li&gt;Typing: &lt;code&gt;mono KeePass.exe&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We can do this:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Install &lt;a href=&quot;http://www.go-mono.com/mono-downloads/download.html&quot;&gt;Mono Framework&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Download latest version of KeePass 2.x and unpack it&lt;/li&gt;
+&lt;li&gt;Open Terminal and navigate to unpacked KeePass folder&lt;/li&gt;
+&lt;li&gt;Run the following command:&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-terminal&quot;&gt;    macpack -o:. -m:winforms -r:/Library/Frameworks/Mono.framework/Versions/Current/lib/ libCocoaSharpGlue.dylib -r:KeePass.chm -r:KeePass.XmlSerializers.dll -r:KeePassLibC32.dll -r:KeePassLibC64.dll -r:License.txt -r:ShinstUtil.exe -r:./XSL -n:KeePass -a:KeePass.exe
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This will create a KeePass.app file that you can drag into your &lt;code&gt;\Applications&lt;/code&gt; folder, and you should be all set.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Mercurial on Windows Tip Global Ignore File</title>
+      <link>http://programmer.brettveenstra.com/2010/02/27/mercurial-on-windows-tip-global-ignore-file/</link>
+      <pubDate>Sat, 27 Feb 2010 11:54:43 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/02/27/mercurial-on-windows-tip-global-ignore-file/</guid>
+      <author></author>
+      <description>&lt;p&gt;If you’re using &lt;a href=&quot;http://tortoisehg.bitbucket.org/&quot;&gt;TortoiseHg&lt;/a&gt;, (if you’re not, you should stop reading now to go install it), in your default installation you &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;should put your &lt;code&gt;Mercurial.ini&lt;/code&gt; file in your &lt;code&gt;%userprofile%&lt;/code&gt; folder.&lt;/p&gt;
+&lt;p&gt;Make your &lt;code&gt;[ui]&lt;/code&gt; section edits to point to a file (name is up to you):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[ui]
+...
+ignore = %userprofile%\.hgignore
+...
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Finally, make sure you have an &lt;code&gt;.hgignore&lt;/code&gt; compatible file.  This is what I’m using right now:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;syntax: glob
+*.o
+*.lo
+*.la
+#*#
+.*.rej
+*.rej
+.*~
+*~
+.#*
+.DS_Store
+*.suo
+*.user
+*.webinfo
+[Bb]in
+*/[Bb]in
+[Oo]bj
+*/[Oo]bj
+*.[Bb][Aa][Kk]
+*.~??
+*[Tt][Mm][Pp]
+_vti_txt
+*/_vti_txt
+_vti_script
+*/_vti_script
+_vti_pvt
+*/_vti_pvt
+_vti_cnf
+*/_vti_cnf
+_private
+*/_private
+.~*
+*.~*
+[Rr]elease
+*/[Rr]elease
+[Dd]ebug
+*/[Dd]ebug
+[Aa]nkh.[Ll]oad
+*/_ReSharper*
+_ReSharper*
+*resharper*
+*.Cache
+*.StyleCop
+*.ReSharper
+obj/
+bin/
+*.ncb
+*.suo
+_ReSharper.*
+*.resharper.user
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
+      <title>NDepend Use Case - Find Childless Interfaces (TDD Helper)</title>
+      <link>http://programmer.brettveenstra.com/2010/01/21/ndepend-use-case-find-childless-interfaces-tdd-helper/</link>
+      <pubDate>Thu, 21 Jan 2010 10:03:54 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/01/21/ndepend-use-case-find-childless-interfaces-tdd-helper/</guid>
+      <author></author>
+      <description>&lt;p&gt;When using &lt;a href=&quot;http://en.wikipedia.org/wiki/Test-driven_development&quot;&gt;TDD&lt;/a&gt;, especially with utilities such as &lt;a href=&quot;http://codebetter.com/blogs/jeremy.miller/archive/2008/02/09/automocker-in-structuremap-2-5.aspx&quot;&gt;StuctureMap’s RhinoAutoMocker&lt;/a&gt; I tend to end up with some &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;“childless” interfaces.  &lt;/p&gt;
+&lt;p&gt;Granted, this could just mean I’m a crappy OO designer, but I like to think it’s more from hammering out the design as I’m working on the problem!&lt;/p&gt;
+&lt;p&gt;So, I might have a code base that has unused interfaces lying around, and I just want to clean those up.&lt;/p&gt;
+&lt;p&gt;With &lt;a href=&quot;http://www.ndepend.com&quot;&gt;NDepend&lt;/a&gt;, you can use &lt;a href=&quot;http://www.ndepend.com/CQL.htm&quot;&gt;Code Query Language (CQL)&lt;/a&gt; to search for items of interest in your code base.  Very cool.&lt;/p&gt;
+&lt;p&gt;Here’s the CQL for finding Interfaces that have no implementations.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// &amp;lt;Name&amp;gt;Find interfaces without Derivatives&amp;lt;/Name&amp;gt;
+SELECT TYPES WHERE IsInterface AND NbChildren == 0
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
+      <title>NDepend - First Impressions</title>
+      <link>http://programmer.brettveenstra.com/2010/01/20/ndepend-first-impressions/</link>
+      <pubDate>Wed, 20 Jan 2010 19:23:38 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/01/20/ndepend-first-impressions/</guid>
+      <author></author>
+      <description>&lt;p&gt;Sitting down to check out a copy of &lt;a href=&quot;http://www.ndepend.com/&quot;&gt;NDepend&lt;/a&gt; is very &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;intimidating.  You see, I’ve been intrigued by the product ever since reading  &lt;a href=&quot;http://www.hanselman.com/blog/ExitingTheZoneOfPainStaticAnalysisWithNDepend.aspx&quot;&gt;Hanselman’s description of its capabilities&lt;/a&gt;.  Scott also put up a &lt;a href=&quot;http://www.hanselman.com/blog/content/binary/NDepend%20metrics%20placemats%201.1.pdf&quot;&gt;cheat sheet&lt;/a&gt; of sorts to the metrics used in NDepend’s analysis.&lt;/p&gt;
+&lt;p&gt;Rather than a rehash, go check the article, another bang-up job by Scott.  What is intimidating is all the analysis you can do with this tool, it makes you feel like you &lt;strong&gt;should be doing something smart with it&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;For that problem, I can’t say I have a good solution for you.  Perhaps if I was in charge of more than a handful of developers as a architect, and coded less frequently, this tool would feel more comforting to me.  In my current capacity as a dev lead, working daily in .NET with a team of other senior dev’s, I haven’t quite entered that “Zone of Pain”.&lt;/p&gt;
+&lt;p&gt;One thing I give kudo’s to the NDepend team for is their &lt;a href=&quot;http://www.ndepend.com/GettingStarted.aspx&quot;&gt;Videos and Tutorials&lt;/a&gt; and comprehensive help.  Clearly I’m not the only one some confusion on how to make the most of this tool and it’s great to know that the product team has put serious work into making the tool discoverable and useful.&lt;/p&gt;
+&lt;p&gt;Another nice feature, is an ability to call out NDepend from Visual Studio and Reflector, which is my normal code exploratory/analysis tool.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>How to determine table data sizes via T-SQL</title>
+      <link>http://programmer.brettveenstra.com/2010/01/07/how-to-determine-table-data-sizes-via-t-sql/</link>
+      <pubDate>Thu, 07 Jan 2010 16:00:05 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2010/01/07/how-to-determine-table-data-sizes-via-t-sql/</guid>
+      <author></author>
+      <description>&lt;p&gt;I needed a quick and dirty way to find out how much data tables were consuming in a SQL Server database.  &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;Ripping off what &lt;a href=&quot;http://msdn.microsoft.com/en-us/library/ms188776.aspx&quot;&gt;&lt;code&gt;sp_spaceused&lt;/code&gt;&lt;/a&gt; does, I came up with this:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-SQL&quot;&gt;
+&lt;span class=&quot;operator&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;SELECT&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;t&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt;,
+    &lt;span class=&quot;keyword&quot;&gt;LTRIM&lt;/span&gt; (&lt;span class=&quot;keyword&quot;&gt;STR&lt;/span&gt; (
+        &lt;span class=&quot;keyword&quot;&gt;SUM&lt;/span&gt; (
+        &lt;span class=&quot;keyword&quot;&gt;CASE&lt;/span&gt;
+        &lt;span class=&quot;keyword&quot;&gt;WHEN&lt;/span&gt; (index_id &amp;lt; &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;THEN&lt;/span&gt; (in_row_data_page_count + lob_used_page_count + row_overflow_used_page_count)
+        &lt;span class=&quot;keyword&quot;&gt;ELSE&lt;/span&gt; lob_used_page_count + row_overflow_used_page_count
+        &lt;span class=&quot;keyword&quot;&gt;END&lt;/span&gt;
+    )  * &lt;span class=&quot;number&quot;&gt;8&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;15&lt;/span&gt;, &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;) + &lt;span class=&quot;string&quot;&gt;' KB'&lt;/span&gt;) &lt;span class=&quot;keyword&quot;&gt;AS&lt;/span&gt; DataSize
+&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;sys&lt;/span&gt;.dm_db_partition_stats s
+&lt;span class=&quot;keyword&quot;&gt;INNER&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;JOIN&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;sys&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;t&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;t&lt;/span&gt;.object_id = s.object_id
+&lt;span class=&quot;keyword&quot;&gt;GROUP&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;BY&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;t&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;name&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Inconsistent line ending style upon Subversion Import / Commit</title>
+      <link>http://programmer.brettveenstra.com/2009/08/13/inconsistent-line-ending-style-upon-subversion-import-commit/</link>
+      <pubDate>Thu, 13  Aug 2009 21:33:22 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2009/08/13/inconsistent-line-ending-style-upon-subversion-import-commit/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;em&gt;For posterity and my future sanity (and hopefully this helps the rest of us SVN-crazy developers).&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;When doing IMPORT or COMMIT operations using Subversion, we can &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;receive a message like “Inconsistent line ending style”.&lt;/p&gt;
+&lt;p&gt;Particularly when IMPORTING, this can be a frustrating occurrence, with a host of hints provided online, but I couldn’t find anything but “brute force” approaches of converting EOL symbols by touching each file.&lt;/p&gt;
+&lt;p&gt;I use [auto-props] in my svn config file, and this is both part of the problem and the ultimate solution.&lt;/p&gt;
+&lt;p&gt;The latest occurrence happened when IMPORTING several XML files into a Repository.  The confusing part is many of the XML files reported success, and then SVN hit an XML file with a different EOL style than &lt;em&gt;all the others&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;My auto-props entry used to be:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt; *.xml = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Date Revision
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Here’s my solution (svn config file):&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;[auto-props]
+*.xml = svn:mime-type=text/xml;svn:eol-style=CRLF;svn:keywords=Date Revision
+
+[miscellany]
+enable-auto-props = yes
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Hopefully this helps you out as well.&lt;/p&gt;
+&lt;!--dotnetkickit--&gt;
+</description>
+    </item>
+    <item>
+      <title>Resharper Tip  To-do Explorer</title>
+      <link>http://programmer.brettveenstra.com/2009/07/17/resharper-tip-to-do-explorer/</link>
+      <pubDate>Fri, 17 Jul 2009 14:00:46 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2009/07/17/resharper-tip-to-do-explorer/</guid>
+      <author></author>
+      <description>&lt;p&gt;Do you find your code riddled with&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;throw new NotImplementedException();
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;or&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// TODO:
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Did you know that &lt;a href=&quot;http://jetbrains.com/resharper&quot;&gt;Resharper&lt;/a&gt; provides support to find those elements quickly?  &lt;/p&gt;
+&lt;p&gt;When using the Visual Studio keyboard mappings, you can bring up the To-do Explorer with &lt;code&gt;[Ctrl+Alt+D]&lt;/code&gt; or click on the Resharper &amp;gt; Windows &amp;gt; To-do Explorer.&lt;/p&gt;
+&lt;p&gt;For futher tweaking, check out the “To-do Items” in the Resharper Options window.  It provides full RegEx capability for creating your own patterns!&lt;/p&gt;
+&lt;!--dotnetkickit--&gt;
+</description>
+    </item>
+    <item>
+      <title>Certification Roadmap</title>
+      <link>http://programmer.brettveenstra.com/2009/03/11/certification-roadmap/</link>
+      <pubDate>Wed, 11 Mar 2009 13:08:31 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2009/03/11/certification-roadmap/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’m finally sick of a few too many things&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Having certificates that are older than most of my children&lt;/li&gt;
+&lt;li&gt;Seeing the following Roadmap on my cube wall&lt;/li&gt;
+&lt;li&gt;Not moving forward on any of this&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;You may ask why of course, but I’ll leave that justification for another post.&lt;/p&gt;
+&lt;p&gt;So, the ultimate goal is &lt;a href=&quot;http://www.microsoft.com/learning/mcp/mcpd/entapp/&quot;&gt;MCPD: Enterprise Developer&lt;/a&gt; and &lt;a href=&quot;http://www.microsoft.com/learning/mcp/mcitp/sql/2008/default.mspx&quot;&gt;MCITP: Database Developer 2008&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;First, I must attain &lt;a href=&quot;http://www.microsoft.com/learning/mcp/mcad/&quot;&gt;MCAD.NET&lt;/a&gt; status by passing:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/exams/70-316.mspx&quot;&gt;Exam 70-316: Developing and Implementing Windows-Based Applications with Microsoft Visual C# .NET and Microsoft Visual Studio .NET&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/exams/70-320.mspx&quot;&gt;Exam 70-320: Developing XML Web Services and Server Components with Microsoft Visual C# .NET and the Microsoft .NET Framework&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then, a “simple” All-In-One upgrade exam to attain MCPD: Enterprise Developer:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/exams/70-552.mspx&quot;&gt;Exam 70-552: MCAD Skills to MCPD Windows Developer by Using the Microsoft .NET Framework&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then, I need two more exams:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/exams/70-433.mspx&quot;&gt;Exam 70-433: Microsoft SQL Server 2008, Database Development&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/exams/70-451.mspx&quot;&gt;Exam 70-451: Designing Database Solutions and Data Access Using Microsoft SQL Server 2008&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If I have any energy left in the year, I’ll try to get my MCPD up to v2008 level by taking:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/Exams/70-568.aspx&quot;&gt;Exam 70-568: Upgrade: Transition your MCPD Enterprise Application Developer Skills to MCPD Enterprise Applications Developer 3.5, Part 1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.microsoft.com/learning/en/us/Exams/70-569.aspx&quot;&gt;Exam 70-569: Upgrade: Transition your MCPD Enterprise Application Developer Skills to MCPD Enterprise Applications Developer 3.5, Part 2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>Continuous Integration Gotcha NAnt empty elements</title>
+      <link>http://programmer.brettveenstra.com/2008/10/31/continuous-integration-gotcha-nant-empty-elements/</link>
+      <pubDate>Fri, 31 Oct 2008 09:43:05 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2008/10/31/continuous-integration-gotcha-nant-empty-elements/</guid>
+      <author></author>
+      <description>&lt;p&gt;For those of us using the &lt;a href=&quot;http://jetbrains.com/teamcity&quot;&gt;TeamCity&lt;/a&gt; continuous integration tool, I ran across a gotcha this morning that I &lt;strong&gt;will&lt;/strong&gt; forget very soon.&lt;/p&gt;
+&lt;h2 id=&quot;the-problem&quot;&gt;The problem&lt;/h2&gt;
+&lt;p&gt;When running NAnt script on my local machine “in developer mode”, everything runs fine.  However, once it goes to TeamCity, it puts up a general error:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;&amp;gt; Could not include build file &amp;#39;X:\teamcity-BuildAgent\work\684ab6ff82f1a29a\build\foo.core.build&amp;#39;. 
+&amp;gt; Object reference not set to an instance of an object.
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;In the end, my offending entry was:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-XML&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;fileset&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;cube.load.files&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;
+  &lt;span class=&quot;comment&quot;&gt;&amp;lt;!-- &amp;lt;include name=&quot;${build.mxl.dml.dir}\foo.mxl&quot; asis=&quot;true&quot;/&amp;gt; --&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;fileset&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here’s my NAnt file pattern.  I use a set of local.properties.xml for a development machine.  I also create a buildserver.properties.xml for the TeamCity run.  Then I create a “wrapper” NAnt file that includes both the CORE build script as well as the &lt;code&gt;*.properties.xml&lt;/code&gt; file for the given environment.  &lt;/p&gt;
+&lt;p&gt;This has worked very smoothly in the past so this morning it was rather frustrating to receive the error.  The inspiration for this methodology was inspired by &lt;a href=&quot;http://blog.jpboodhoo.com/NAntStarterSeries.aspx&quot;&gt;Jean-Paul’s excellent NAnt series&lt;/a&gt;.  I highly encourage you to check it out.&lt;/p&gt;
+&lt;p&gt;Back to the problem… When running under TeamCity, I get a failure to include a build file, but everything works when running on a development machine.&lt;/p&gt;
+&lt;h2 id=&quot;the-solution&quot;&gt;The Solution&lt;/h2&gt;
+&lt;p&gt;Remove EMPTY elements from the XML-formatted NAnt file (or close them using shorthand).  For some reason, it looks as if TeamCity’s NAnt runner is parsing those files before sending them over to NAnt (guessing here).  &lt;/p&gt;
+&lt;p&gt;And once I cleaned up this empty element, it worked!  Interesting how this &lt;a href=&quot;http://programmer.brettveenstra.com/2008/09/13/gotcha-of-inline-document-ready-function-for-jquery&quot;&gt;yet another reason&lt;/a&gt; why &lt;a href=&quot;http://http://www.codinghorror.com/blog/archives/001114.html&quot;&gt;XML is the bane of developers&lt;/a&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-xml&quot;&gt;[xml]
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;fileset&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;id&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;cube.load.files&quot;&lt;/span&gt; /&amp;gt;&lt;/span&gt;
+[/xml]
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Gotcha of inline Document Ready function for JQuery</title>
+      <link>http://programmer.brettveenstra.com/2008/09/13/gotcha-of-inline-document-ready-function-for-jquery/</link>
+      <pubDate>Sat, 13 Sep 2008 02:56:34 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2008/09/13/gotcha-of-inline-document-ready-function-for-jquery/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’ve had some reasons to use JQuery this week, and you should believe whatever good rumors and hype you’ve heard about this library.  It’s amazing.&lt;/p&gt;
+&lt;p&gt;There are &lt;a href=&quot;http://roshanbh.com.np/2008/03/jquery-benefits-examples-free-ebook.html&quot;&gt;many benefits to a Javascript framework&lt;/a&gt;, particularly &lt;a href=&quot;http://jquery.com&quot;&gt;JQuery&lt;/a&gt;.  Take this example that I put inside my &lt;code&gt;&amp;lt;head\&amp;gt;&lt;/code&gt; element:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-Javascript&quot;&gt;&amp;lt;script type=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;
+    $(&lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;).ready(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;{
+        $(&lt;span class=&quot;string&quot;&gt;'#deliciouslogin'&lt;/span&gt;).submit(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;{
+            alert(&lt;span class=&quot;string&quot;&gt;&quot;This to authenticate with Delicious and start retrieving Bookmarks into Google Gears  database&quot;&lt;/span&gt;);
+        })
+    });
+&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;goodness&quot;&gt;Goodness&lt;/h2&gt;
+&lt;p&gt;This is the &lt;a href=&quot;http://docs.jquery.com/How_jQuery_Works#.24.28document.29.ready.28function.28.29.7B.7D.29.3B&quot;&gt;“Document Ready”&lt;/a&gt; function.  This solves the problem of running your Javascript code before your page is done rendering on the browser.  Also note how easy it is to hookup an “onsubmit” event handler.  You use CSS-selectors to identify what HTML element(s) to apply to, and JQuery does the rest, figuring out the best way to accomplish that &lt;strong&gt;regardless of your browser&lt;/strong&gt;.  Great fun.&lt;/p&gt;
+&lt;h2 id=&quot;problems-appear&quot;&gt;Problems Appear&lt;/h2&gt;
+&lt;p&gt;My elation quickly disappeared when I fired this sample up in FireFox 3, nothing happened when my &lt;code&gt;&amp;lt;form\&amp;gt;&amp;#39;s&lt;/code&gt; submit button was triggered.  Frustrated, I quickly tried it in Safari (Mac), it worked fine.  I switched to the PC and grumpy IE6, and again, no luck.  So what’s going on?&lt;/p&gt;
+&lt;p&gt;It turns out that the inline JavaScript will be ignored if you close the element just prior in your &lt;code&gt;&amp;lt;head\&amp;gt;&lt;/code&gt; section with the shorthand closetag &lt;code&gt;/&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This doesn’t work:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-Javascript&quot;&gt;&amp;lt;script type=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt; src=&lt;span class=&quot;string&quot;&gt;&quot;lib/jquery/jquery.js&quot;&lt;/span&gt; /&amp;gt;
+&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+    $(&lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;).ready(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;{
+        &lt;span class=&quot;comment&quot;&gt;// blah&lt;/span&gt;
+        })
+    });
+&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;This does work:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-Javascript&quot;&gt;&amp;lt;script type=&lt;span class=&quot;string&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt; src=&lt;span class=&quot;string&quot;&gt;&quot;lib/jquery/jquery.js&quot;&lt;/span&gt;&amp;gt;&lt;span class=&quot;xml&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;text/javascript&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;javascript&quot;&gt;
+    $(&lt;span class=&quot;built_in&quot;&gt;document&lt;/span&gt;).ready(&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;(&lt;span class=&quot;params&quot;&gt;&lt;/span&gt;)&lt;/span&gt;{
+        &lt;span class=&quot;comment&quot;&gt;// blah&lt;/span&gt;
+        })
+    });
+&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Hopefully I will remember this in the future, as this is now the &lt;strong&gt;second time&lt;/strong&gt; in two days wondering why my Javascript wasn’t activated.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Response to Readability</title>
+      <link>http://programmer.brettveenstra.com/2008/08/28/response-to-readability/</link>
+      <pubDate>Thu, 28  Aug 2008 23:48:04 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2008/08/28/response-to-readability/</guid>
+      <author></author>
+      <description>&lt;p&gt;JP put out another post &lt;a href=&quot;http://blog.jpboodhoo.com/ThoughtsOnReadability.aspx&quot;&gt;requesting comments on a Readable (Fluent) approach he’s currently using&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I tried to leave a comment, but the system &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;wouldn’t accept anything I used for the captcha… so here goes:&lt;/p&gt;
+&lt;p&gt;JP writes:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cs&quot;&gt;Run.the&amp;lt;wire_up_global_error_handling&amp;gt;()
+.then&amp;lt;initialize_the_container_for_the_user_interface&amp;gt;()
+.then&amp;lt;initialize_the_user_interface_registry&amp;gt;()
+.then&amp;lt;initialize_the_ui_images_registry&amp;gt;()
+.then&amp;lt;initialize_the_main_menus&amp;gt;()
+.execute();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Here are my humble comments:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Run&lt;/code&gt; &amp;amp; &lt;code&gt;execute&lt;/code&gt; seems redundant&lt;/li&gt;
+&lt;li&gt;The underscores are nice to look at but CamelCasing is also easy to read (for me), and easier to type … I suppose if you’re using your &lt;a href=&quot;http://blog.jpboodhoo.com/BDDAutoHotKeyScriptUpdateTake2.aspx&quot;&gt;AutoHotKey ninja tricks like JP does&lt;/a&gt;, this would be minimum overhead.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So, for the full comparison in code:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-cs&quot;&gt;Start.by&amp;lt;wireUpGlobalErrorHandling&amp;gt;()
+.and&amp;lt;initializeTheContainerForTheUserInterface&amp;gt;()
+.and&amp;lt;initializeTheUserInterfaceRegistry&amp;gt;()
+.and&amp;lt;initializeTheUiImagesRegistry&amp;gt;()
+.&lt;span class=&quot;keyword&quot;&gt;finally&lt;/span&gt;&amp;lt;initializeTheMainMenus&amp;gt;();
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
+    <item>
+      <title>Resharper 4.0 Release Candidate Available</title>
+      <link>http://programmer.brettveenstra.com/2008/06/05/resharper-4-0-release-candidate-available/</link>
+      <pubDate>Thu, 05 Jun 2008 14:47:13 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2008/06/05/resharper-4-0-release-candidate-available/</guid>
+      <author></author>
+      <description>&lt;p&gt;JetBrains has just &lt;a href=&quot;http://confluence.jetbrains.net/display/ReSharper/ReSharper+4.0+Nightly+Builds&quot;&gt;posted their Release Candidate &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;for Resharper 4.0&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://farm4.static.flickr.com/3025/2554410086_a085eaff68.jpg?v=0&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;I’m excited to see this and already have my C# tax ($99) lined up for it’s official release!&lt;/p&gt;
+&lt;p&gt;I’m officially a convert from the CodeRush/Refactor Pro camp… I just found Resharper more discoverable than CodeRush.  CodeRush definitely has a slicker UI, but Resharper lets me work more like myself (renames/namespaces/interface-based architecture) in Visual Studio.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Multiple Views (redux)</title>
+      <link>http://programmer.brettveenstra.com/2008/02/19/multiple-views-redux/</link>
+      <pubDate>Tue, 19 Feb 2008 16:01:51 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2008/02/19/multiple-views-redux/</guid>
+      <author></author>
+      <description>&lt;p&gt;Jeremy posted an &lt;a href=&quot;http://jeremyjarrell.com/archive/2008/02/19/82.aspx&quot;&gt;article on retrieving filtered results on collections&lt;/a&gt;, using the perennial Animal kingdom example.  Great post.&lt;/p&gt;
+&lt;p&gt;As I was looking at this again, it just started looking “smelly”.  First thought&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;, can we do this cleaner with &lt;a href=&quot;http://programmer.brettveenstra.com/2008/02/19/multiple-views-redux/href=%22http://www.google.com/url?sa=t&amp;amp;ct=res&amp;amp;cd=1&amp;amp;url=http%3A%2F%2Fmsdn2.microsoft.com%2Fen-us%2Flibrary%2Fms379564(VS.80).aspx&amp;amp;ei=U0K7R8fwDpOwiAHSj6z5CA&amp;amp;usg=AFQjCNGp2vS4kpeLcGjXWtnM-3-rc8UZ1A&amp;amp;sig2=EqElobu2fgGrPArnFHFUVg&quot;&gt;Generics&lt;/a&gt;?&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public IEnumerable AnimalsList() where AnimalType:class
+{
+  foreach (IAnimal animal in _animals)
+  {
+    AnimalType testAnimal = animal as AnimalType;
+    if (testAnimal != null)
+      yield return testAnimal;
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Oh yeah… generics are just the coolest thing.&lt;/p&gt;
+&lt;p&gt;But, this still smelled to me (I didn’t like all the filter code inside the function).  Sprinkling some functional programming goodness (&lt;a href=&quot;http://diditwith.net/PermaLink,guid,a1a76478-03d2-428f-9db6-9cf4e300ea0f.aspx&quot;&gt;thank you Dustin&lt;/a&gt;), it turned into this.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;public delegate bool FilterAnimalPredicate(System.Type type);
+
+/// snip
+
+public IEnumerable AnimalList(FilterAnimalPredicate filter)
+{
+  foreach (IAnimal animal in _animals)
+  {
+    if (filter(animal.GetType()))
+    {
+      yield return animal;
+    }
+  }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Admittedly, I have cheated … we are no longer using a Property, and hence the unit tests had to change.  But I’d take this approach as it feels much cleaner.&lt;/p&gt;
+&lt;p&gt;Thanks again to Jeremy for sparking this post.&lt;/p&gt;
+&lt;p&gt;Here’s the final Test Code:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;using System;
+using System.Collections;
+using System.Collections.Generic;
+using MbUnit.Framework;
+
+namespace MultipleIterators.Test
+{
+    [TestFixture]
+    public class ZooTest
+    {
+
+        private static bool IsElephant(System.Type type)
+        {
+            return (type is Elephant);
+        }
+
+        private static bool IsZebra(System.Type type)
+        {
+            return (type is Zebra);
+        }
+
+        [Test]
+        public void Can_add_elephants_to_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Elephant());
+            int animalCounter = 0;
+
+            foreach (IAnimal animal in zoo.Animals){
+                animalCounter++;
+            }
+            Assert.AreEqual(1, animalCounter);
+        }
+
+        [Test]
+        public void Can_add_zebras_to_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            int animalCounter = 0;
+
+            foreach (IAnimal animal in zoo.Animals){
+                animalCounter++;
+            }
+            Assert.AreEqual(1, animalCounter);
+        }
+
+        [Test]
+        public void Can_get_just_the_zebras_out_of_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Zebra zebra in zoo.AnimalsList&amp;lt;Zebra&amp;gt;()){
+                Assert.IsTrue(zebra is Zebra);
+            }
+        }
+
+        [Test]
+        public void Can_get_just_the_elephants_out_of_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Elephant elephant in zoo.AnimalsList&amp;lt;Elephant&amp;gt;()){
+                Assert.IsTrue(elephant is Elephant);
+            }
+        }
+
+        [Test]
+        public void Can_get_just_the_elephants_out_of_the_zoo_using_predicate()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Elephant elephant in zoo.AnimalList(IsElephant)){
+                Assert.IsTrue(elephant is Elephant);
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    <item>
+      <title>Vista SP1 - seeking users</title>
+      <link>http://programmer.brettveenstra.com/2007/12/04/vista-sp1-seeking-users/</link>
+      <pubDate>Tue, 04 Dec 2007 10:22:34 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/12/04/vista-sp1-seeking-users/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’m not sure if I’ll ever run VISTA in this decade… I haven’t even played with the beta’s… I recommend to friends and family to keep their Windows XP disk around.&lt;/p&gt;
+&lt;p&gt;Why?  &lt;a href=&quot;http://www.google.com/search?q=reasons+not+to+upgrade+to+Windows+VISTA&amp;amp;ie=utf-8&amp;amp;oe=utf-8&amp;amp;aq=t&amp;amp;rls=org.mozilla:en-US:official&amp;amp;client=firefox-a&quot;&gt;There are so many reasons&lt;/a&gt;, but maybe one of the biggies might be coming to an end…&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.zdnet.com/blog/bott/rss&quot;&gt;Ed Bott of ZD Net is reporting that Service Pack 1 (SP1) of VISTA next year will not include the “kill switch”.&lt;/a&gt; You knew this one right?  If you do not activate VISTA in time, some functionality stops working… this gets more interesting if you’re not connected to the ‘net or experience a &lt;a href=&quot;http://www.zdnet.com/blog/bott/rss&quot;&gt;glitch&lt;/a&gt;.&lt;a href=&quot;http://www.zdnet.com/blog/bott/rss&quot;&gt;
+&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I don’t know how much more evidence one might need to conclude that Microsoft’s latest operating system is not really hitting it’s mark, regardless of the hype otherwise.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Storage in the cloud - JungleDisk.com</title>
+      <link>http://programmer.brettveenstra.com/2007/11/09/storage-in-the-cloud-jungledisk-com/</link>
+      <pubDate>Fri, 09 Nov 2007 00:16:30 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/11/09/storage-in-the-cloud-jungledisk-com/</guid>
+      <author></author>
+      <description>&lt;p&gt;&lt;img src=&quot;http://farm2.static.flickr.com/1014/1394465957_e30d421a75_m.jpg&quot; alt=&quot;&quot;&gt;These are exciting times and another idea turned gold is &lt;a href=&quot;https://www.jungledisk.com/&quot;&gt;Jungle Disk&lt;/a&gt;.  A cross-platform Amazon S3 interface for remote storage. They setup a WebDAV service on your machine that runs their bits to encrypt and transmit your files up to Amazon’s S3 service.&lt;/p&gt;
+&lt;p&gt;Never heard of S3?  Neither had I&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; until visiting the &lt;a href=&quot;http://www.dayofdotnet.org/AnnArbor/Fall2007/Sessions.aspx&quot;&gt;Day of .NET in Arbor&lt;/a&gt; this past October.  I happened to catch the tail end of Joe Klunk’s “&lt;a class=&quot;sessionname&quot; title=&quot;8&quot; name=&quot;8&quot;&gt;&lt;/a&gt;Storage (and more) in the Cloud” session.  He built a quick .NET application to push files up to &lt;a href=&quot;http://aws.amazon.com/s3/&quot;&gt;Amazon’s Simple Storage Service&lt;/a&gt; (S3).  Now that wasn’t mind blowing as I had done WebDAV operations back in the heady days of ASP, “classic”.  What &lt;strong&gt;was&lt;/strong&gt; mind blowing was the price for storage: $0.15 USD, per month, per &lt;strong&gt;GIG-**&lt;/strong&gt;a-byte**.&lt;/p&gt;
+&lt;p&gt;Now the folks at JungleDisk has just made a program that even our mother’s can use to properly backup their systems.  It’s a great connected world!&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Unit Testing in SQL Server - Overview</title>
+      <link>http://programmer.brettveenstra.com/2007/10/31/unit-testing-in-sql-server-overview/</link>
+      <pubDate>Wed, 31 Oct 2007 18:47:10 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/31/unit-testing-in-sql-server-overview/</guid>
+      <author></author>
+      <description>&lt;p&gt;Ok, so here’s the first in a series of a home grown implementation of Unit Testing SQL server code.&lt;/p&gt;
+&lt;p&gt;I’m not talking about using &lt;a href=&quot;http://msdn.microsoft.com/en-us/vstudio/default.aspx&quot;&gt;Visual Studio Team Edition for Professionals&lt;/a&gt;, like &lt;a href=&quot;http://www.codinghorror.com/blog/2006/12/is-your-database-under-version-control.html&quot;&gt;Jeff recommends&lt;/a&gt;… but I’ll try to provide a general approach to testing your SQL code, particularly stored procedures (sprocs).&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;In SQL processing, we have our classic &lt;a href=&quot;http://en.wikipedia.org/wiki/Create,_read,_update_and_delete&quot;&gt;CRUD operations&lt;/a&gt;, and those operations are impacted by combinations of &lt;strong&gt;existing data&lt;/strong&gt; elsewhere in other columns, tables, databases, or servers.  This is the single biggest challenge in the test as I see it.&lt;/p&gt;
+&lt;p&gt;Admittedly, I’m making the most of my current database architecture in this solution, and yet, I am having trouble imaging this not being a universal approach.&lt;/p&gt;
+&lt;p&gt;In my application to test, we are essentially a high-calculation, low-user interface SQL business engine.  The calculations are all done in sprocs and they have been broken down into “blocks” of results.  That is, Calculation B, will possibly take data results of Calculation A.&lt;/p&gt;
+&lt;p&gt;So here’s a basic diagram of this setup:&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.flickr.com/photos/brettveenstra/1814789859/&quot; title=&quot;Photo Sharing&quot;&gt;
+&lt;img src=&quot;http://farm3.static.flickr.com/2232/1814789859_8026282ac0.jpg&quot; alt=&quot;Testing SQL DBs&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This approach allows a myriad of unit testing possibilities, but here’s my general approach.&lt;/p&gt;
+&lt;p&gt;Using &lt;a href=&quot;http://nunit.org/&quot;&gt;NUnit&lt;/a&gt;, each Calculation would have it’s own &lt;code&gt;TestFixture&lt;/code&gt; and the &lt;code&gt;TestFixtureSetup&lt;/code&gt; would execute the sproc.  The &lt;code&gt;TestFixtureSetup&lt;/code&gt; would also retrieve any external data that the calculation would need into member variables for the fixture.&lt;/p&gt;
+&lt;p&gt;Then, each of the Test’s would look into any external data, WIP table(s) and final Calc table(s) to determine if it passed or not.&lt;/p&gt;
+&lt;p&gt;This is my first toe in the TDD pond for SQL applications.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>TDD - A Workout Promise</title>
+      <link>http://programmer.brettveenstra.com/2007/10/30/tdd-a-workout-promise/</link>
+      <pubDate>Tue, 30 Oct 2007 16:22:39 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/30/tdd-a-workout-promise/</guid>
+      <author></author>
+      <description>&lt;p&gt;Ok… I’ve had enough.  &lt;a href=&quot;http://blog.objectmentor.com/articles/2007/10/20/architecture-is-a-second-order-effect&quot;&gt;Uncle Bob nailed it&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Why don’t we clean our code? When we see an ugly mass of code that we know is going to cause of problems, our first reaction is “This needs to be cleaned up.” Our second reaction is: “If I touch this code I’ll be spending the next two weeks trying to get it to work again.” We don’t clean code because we are afraid we’ll break it.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I promise to&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; figure out how to do TDD against my main T-SQL based application.  It is getting too scary to consider changes and that needs to change, &lt;strong&gt;now&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Tomorrow I’ll post the results after Day 1.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Windows 2000 &amp; iTunes 7.x - Can't we all just get along?</title>
+      <link>http://programmer.brettveenstra.com/2007/10/30/windows-2000-itunes-7-x-can-t-we-all-just-get-along/</link>
+      <pubDate>Tue, 30 Oct 2007 08:59:22 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/30/windows-2000-itunes-7-x-can-t-we-all-just-get-along/</guid>
+      <author></author>
+      <description>&lt;p&gt;From the self-serving, bad memory department… next time you’re running Windows 2000 and iTunes 7.x (or later) starts up with a BLACK canvas and outlined text, you need to go get the &lt;a href=&quot;http://www.microsoft.com/downloads/details.aspx?familyid=6A63AB9C-DF12-4D41-933C-BE590FEAA05A&amp;amp;displaylang=en&quot; title=&quot;GDI+&quot;&gt;GDIPLUS redistributable from Microsoft&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Now, if I can only convince &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;somebody in corporate that DirectX 9 is required for Excel 2003… but, until then, no &lt;a href=&quot;http://www.apple.com/itunes/overview/&quot;&gt;Cover Flow&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Cheers.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>5 Ways to Fail &amp; Dilbert</title>
+      <link>http://programmer.brettveenstra.com/2007/10/26/5-ways-to-fail-dilbert/</link>
+      <pubDate>Fri, 26 Oct 2007 09:18:27 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/26/5-ways-to-fail-dilbert/</guid>
+      <author></author>
+      <description>&lt;p&gt;Joel Spolksy, of &lt;a href=&quot;http://joelonsoftware.com&quot;&gt;Joel On Software&lt;/a&gt; fame, published an interesting &lt;a href=&quot;http://joelonsoftware.com/items/2007/10/25.html&quot;&gt;Inc Magazine article &lt;/a&gt;yesterday.  The article, titled “How Hard Could It Be?: Five Easy Ways to Fail”, covers a number of issues that we developers see from our side of a software project.&lt;/p&gt;
+&lt;p&gt;As I was reading this, I started &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;remembering how intimidating Joel’s words can be:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;You’ll never hear anyone say “the team was just not smart enough or talented enough to pull this off.” Why hurt their feelings? The simple fact is that if the people on a given project team aren’t very good at what they do, they’re going to come into work every day and yet–behold!–the software won’t get created.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;I’m certainly NOT a Master (hence this blog), but just because you don’t have &lt;a href=&quot;http://www.joelonsoftware.com/articles/Unicode.html&quot;&gt;unicode decyphering&lt;/a&gt;, &lt;a href=&quot;http://www.joelonsoftware.com/articles/fog0000000319.html&quot;&gt;PDP-7 microprocessor-based&lt;/a&gt; C running through your veins does not &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;make you a crappy dev.  Nor, can a single person be both an expert in C, OOP, RDBMS, HTTP, Ruby, and .NET.&lt;/p&gt;
+&lt;p&gt;I &lt;strong&gt;did like the article &lt;/strong&gt;though and here’s why: Joel’s message was really to business owners and managers, not us technical folks.  He laid out very clearly that having good people do the work they are qualified to do, following a plan, with reasonable deliver-ables, and focused on quality can give you a successful project.  He throws a few punches at Agile methodologies as well, but I would disagree with &lt;a href=&quot;http://typicalprogrammer.com/index.php&quot;&gt;Greg that Joel doesn’t actually like Agile&lt;/a&gt;, in fact the new &lt;a href=&quot;http://www.fogcreek.com/FogBugz/LearnMore.html?section=PredictShipDates&quot;&gt;scheduling features of FogBugz 6.0&lt;/a&gt; should allow any Agile team to easily maintain their own burndown chart.&lt;/p&gt;
+&lt;p&gt;And just another example of Scott Adams’ timeliness, &lt;span style=&quot;text-decoration: line-through;&quot;&gt;here is today’s Dilbert:&lt;/span&gt;&lt;a href=&quot;http://www.dilbert.com/comics/dilbert/archive/dilbert-20071026.html&quot;&gt;check out the Dilbert of the day&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Play Nice CodeRush &amp; SQL Prompt</title>
+      <link>http://programmer.brettveenstra.com/2007/10/22/play-nice-coderush-sql-prompt/</link>
+      <pubDate>Mon, 22 Oct 2007 11:05:30 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/22/play-nice-coderush-sql-prompt/</guid>
+      <author></author>
+      <description>&lt;p&gt;It truly is amazing the tools we can get our hands on these days.   The two that I &lt;span style=&quot;text-decoration: line-through;&quot;&gt;have a very bad addiction for&lt;/span&gt;cannot code without are &lt;a href=&quot;http://www.devexpress.com/Products/Visual_Studio_Add-in/Coding_Assistance/index.xml&quot;&gt;CodeRush &lt;/a&gt;and &lt;a href=&quot;https://www.red-gate.com/products/SQL_Prompt/index.htm&quot;&gt;SQL Prompt&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The only trouble is&lt;span class=&quot;more&quot;&gt;&lt;/span&gt; that when I use SQL Prompt inside Visual Studio to manage my SQL code, CodeRush tries to hijack the “ESC” key that SQL Prompt uses to cancel it’s own “intellisense” lists.&lt;/p&gt;
+&lt;p&gt;While attending the &lt;a href=&quot;http://www.dayofdotnet.org/AnnArbor/Fall2007/default.aspx&quot;&gt;Day of .Net Fall 2007&lt;/a&gt; event on Saturday, I had a chance to bug lead developer on CodeRush &lt;a href=&quot;http://diditwith.net/2007/08/01/ItsAllAboutMe.aspx&quot;&gt;Dustin Campbell&lt;/a&gt; in the middle of his presentation.  Dustin handled me graciously, especially since it was just another “tech support” question… but he didn’t “fix me”.&lt;/p&gt;
+&lt;p&gt;With Dustin’s suggestion, I was able to get to the correct place though, thanks Dustin!&lt;/p&gt;
+&lt;p&gt;Here’s the solution.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Choose DevExpress &amp;gt; Options&lt;/li&gt;
+&lt;li&gt;IDE \ Shortcuts&lt;/li&gt;
+&lt;li&gt;DXCore \ Support&lt;/li&gt;
+&lt;li&gt;Esc (MarkerCollect command)&lt;/li&gt;
+&lt;li&gt;Choose only the Languages that ESC should collect the markers on (my case: C#, VB, XML/HTML, C++)
+Here’s what it looks like when you’re done.
+&lt;a href=&quot;http://www.flickr.com/photos/brettveenstra/1692075362/&quot; title=&quot;Photo Sharing&quot;&gt;&lt;img src=&quot;http://farm3.static.flickr.com/2400/1692075362_d17c0ef298.jpg&quot; alt=&quot;CodeRushSQLPromptPlayNice&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    <item>
+      <title>Agile - Don't build for tomorrow...</title>
+      <link>http://programmer.brettveenstra.com/2007/10/12/agile-don-t-build-for-tomorrow/</link>
+      <pubDate>Fri, 12 Oct 2007 16:02:41 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/12/agile-don-t-build-for-tomorrow/</guid>
+      <author></author>
+      <description>&lt;p&gt;I’m late to the Agile party, I know… but I cannot help but keep seeing many failures and shortcomings of the past being accepted, welcomed, and then addressed in the Agile space.&lt;/p&gt;
+&lt;p&gt;How many times have you &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;busted your head open trying to estimate a requirement of something completely unknown?   How about spending that extra time (late night/weekend) building in some “cushion” on a function that you could imagine being requested in the next month? How many times have you seen the same good estimate track perfectly until it meets the reality of dependencies inside the product or is the next episode of “The Customer Tweak of the Week”?!&lt;/p&gt;
+&lt;p&gt;Well, wake up, you’re in waterfall land and hardly anyone actually works by that discipline.  We may &lt;strong&gt;say&lt;/strong&gt; we do waterfall, but have you ever told your customer &lt;strong&gt;NO&lt;/strong&gt; for each and every request once the project was underway?  Probably not…&lt;/p&gt;
+&lt;p&gt;If you were merciful like the rest of us, you were being adaptive.&lt;/p&gt;
+&lt;p&gt;James Short &lt;a href=&quot;http://jamesshore.com/Presentations/Beyond%20Story%20Cards.html&quot;&gt;wrote up an article on some of his mentoring of XP&lt;/a&gt;, but the part I really enjoyed was the realistic approach Agile takes: put off a decision until the “last responsible moment” so that you have as much of the information and as little assumption going into your decision.  The decision in this case means to write up a specification.&lt;/p&gt;
+&lt;p&gt;In the same vein, you need to also remember to only spec for the present, instead of trying to build up a super infrastructure for all possible scenarios of the feature you’re implementing at the moment.  We need to trust, no rely, on a metholody (TDD + Refactoring) that will flush out design inefficiencies and let us go back and put those in when they are finally needed.  Again, do not built today something that isn’t needed &lt;strong&gt;today&lt;/strong&gt;.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Venn Diagrams explain SQL Joins Perfectly</title>
+      <link>http://programmer.brettveenstra.com/2007/10/12/venn-diagrams-explain-sql-joins-perfectly/</link>
+      <pubDate>Fri, 12 Oct 2007 09:53:35 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/12/venn-diagrams-explain-sql-joins-perfectly/</guid>
+      <author></author>
+      <description>&lt;p&gt;In a series of posts on both &lt;a href=&quot;http://www.codinghorror.com/blog/2007/10/a-visual-explanation-of-sql-joins.html&quot;&gt;Coding Horror&lt;/a&gt; and the linked &lt;a href=&quot;http://www.khankennels.com/blog/index.php/archives/2007/04/20/getting-joins/&quot;&gt;Me Talking Out Loud&lt;/a&gt;, comments have arisen that suggest Venn diagrams are insufficient to properly represent SQL Joins.&lt;/p&gt;
+&lt;p&gt;I totally disagree, Venn diagrams fit perfectly.  The biggest problem is &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;that people creating the diagram assume that the Table is one of the sets.  This is apparently the problem again with Jeff’s and Ligaya’s diagrams.&lt;/p&gt;
+&lt;p&gt;Here’s one of Jeff’s awesome images:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://codinghorror.typepad.com/.a/6a0120a85dcdae970b012877702708970c-pi&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;We’ve seen this as the classical starting point to explain joins in relational databases.  Once you get over the mechanics of what the JOIN operations do, you need to abandon this thinking quickly and focus on just what are those sets, otherwise you keep thinking about tables, not conditions.&lt;/p&gt;
+&lt;p&gt;For instance, how are these SQL statements different?&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-SQL&quot;&gt;&lt;span class=&quot;operator&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;SELECT&lt;/span&gt; *
+&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; customer
+&lt;span class=&quot;keyword&quot;&gt;INNER&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;JOIN&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; = customer.&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;
+&lt;span class=&quot;keyword&quot;&gt;WHERE&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt;.total &amp;gt; &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;
+
+
+&lt;span class=&quot;keyword&quot;&gt;SELECT&lt;/span&gt; *
+&lt;span class=&quot;keyword&quot;&gt;FROM&lt;/span&gt; customer
+&lt;span class=&quot;keyword&quot;&gt;INNER&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;JOIN&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;ON&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt;.&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt; = customer.&lt;span class=&quot;keyword&quot;&gt;id&lt;/span&gt;
+    &lt;span class=&quot;keyword&quot;&gt;AND&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;order&lt;/span&gt;.total &amp;gt; &lt;span class=&quot;number&quot;&gt;100&lt;/span&gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;They aren’t.  In a Venn Diagram, this could be represented as:&lt;/p&gt;
+&lt;!--[if gte vml 1]&amp;gt;   &amp;lt;![endif]--&gt;&lt;!--[if !vml]--&gt;&lt;img src=&quot;http://farm3.static.flickr.com/2087/1551734559_69b3fe3f2c.jpg?v=0&quot; alt=&quot;&quot;&gt;&lt;!--[endif]--&gt;
+&lt;h3 id=&quot;next-time-you-re-working-up-some-sql-code-start-first-with-what-you-are-trying-to-get-and-then-focus-on-how-to-they-relate-with-a-join-&quot;&gt;Next time you’re working up some SQL code, start first with what you are trying to get, and then focus on how to they relate with a JOIN.&lt;/h3&gt;
+&lt;p&gt;What about the CROSS JOIN you say?  Instead of this (from Ligaya):&lt;/p&gt;
+&lt;!--[if gte vml 1]&amp;gt;   &amp;lt;![endif]--&gt;&lt;!--[if !vml]--&gt;&lt;img src=&quot;http://www.khankennels.com/blog/wp-content/uploads/2007/04/thetavenn.png&quot; alt=&quot;&quot;&gt;&lt;!--[endif]--&gt;
+&lt;p&gt;Draw a &lt;strong&gt;large &lt;/strong&gt;circle with the product of the areas of your original sets…  :)&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>NAnt - really?</title>
+      <link>http://programmer.brettveenstra.com/2007/10/09/nant-really/</link>
+      <pubDate>Tue, 09 Oct 2007 16:37:01 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/10/09/nant-really/</guid>
+      <author></author>
+      <description>&lt;p&gt;So I’m looking at taking &lt;a href=&quot;http://codebetter.com/blogs/jean-paul_boodhoo/archive/2007/10/01/directory-structure-for-projects.aspx&quot; title=&quot;CodeBetter.Com - Directory Structure for Projects&quot;&gt;JPB’s advice on a Visual Studio project setup&lt;/a&gt; and his reference to using NAnt for his normal builds&lt;span style=&quot;text-decoration: line-through;&quot;&gt; - even small projects&lt;/span&gt;.  I’ve seen reference to NAnt for years now and am still having trouble thinking this is just overkill for a “small” standard project.&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;I’m running a VS2005 project with 8 projects and my compile only takes 3 minutes.  I know people have claimed &lt;strong&gt;orders of magnitude&lt;/strong&gt; of build time improvement, but it still seems strange to go through the hassle of creating and maintaining XML when I decide I need to breakout the project into another assembly…  if this were going the way of Continuous Integration, I could see the benefits there, but would the &lt;code&gt;.build&lt;/code&gt; file have to be different on the CI server (e.g.  SVN Update, clean, test targets).&lt;/p&gt;
+&lt;p&gt;What am I missing for the small development project?&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Update: My apologies to JPB on the assumption he suggested all projects run NAnt.  I’m still curious, is it overkill to use NAnt, Rake, etc for compiling a solution with less than 20 projects / 10,000 lines of code?&lt;/strong&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>A Better Developer  - Open Source Project</title>
+      <link>http://programmer.brettveenstra.com/2007/09/25/a-better-developer-open-source-project/</link>
+      <pubDate>Tue, 25 Sep 2007 09:34:15 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2007/09/25/a-better-developer-open-source-project/</guid>
+      <author></author>
+      <description>&lt;p&gt;Forgive the total stream of consciousness…&lt;/p&gt;
+&lt;p&gt;In the continuum of craftsmanship (and to keep fully immersed in “pure” product development skills), I need to create a new software project.&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;p&gt;Ideas so far:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Worship Software - cool graphics, rock-solid stability, simplified use, connected, multiple outputs, multiple inputs, cross-platform (QuickTime?/SilverLight?)&lt;/li&gt;
+&lt;li&gt;Web-Based Church Management Software - centered around connectedness&lt;/li&gt;
+&lt;li&gt;“Zero Config” Grid Rendering&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Web-Based File Manager - organizer, ratings, tags, duplicate checker, compression/de-compression built in
+Methodologies:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Test Driven Development&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;Objects drive the data layer (if exists)&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Continuous Integration
+Preferences:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Web over WinForms&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;.NET over Ruby/PHP&lt;/li&gt;
+&lt;li&gt;Quality over Timeliness&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>Virtualization 101</title>
+      <link>http://programmer.brettveenstra.com/2006/08/22/virtualization-101/</link>
+      <pubDate>Tue, 22  Aug 2006 22:15:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/08/22/virtualization-101/</guid>
+      <author></author>
+      <description>&lt;p&gt;Ok, this is for all you programmers out there that don’t always get to rub elbows with the Ops guys…&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://www.vmware.com/products/server/index.html&quot;&gt;VMWare offers free &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;Virtualization&lt;/a&gt;.  You may have used VMWare Workstation in the past, but what is special is VMWare Server.&lt;/p&gt;
+&lt;p&gt;This blew my mind over the weekend:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Install VMWare Server running on Windows 2000 Server (a Linux version also is free).&lt;/li&gt;
+&lt;li&gt;Download one of the many pre-made VMWare Images (&lt;a href=&quot;http://www.vmware.com/appliances//&quot;&gt;Virtual Appliances&lt;/a&gt;) and save it on the on the local drive (I choose &lt;a href=&quot;http://www.vmware.com/appliances/directory/189&quot;&gt;UltimateLAMP&lt;/a&gt; to have something up and running easy)&lt;/li&gt;
+&lt;li&gt;Install VMWare Client Tools on any PC on my network.&lt;/li&gt;
+&lt;li&gt;CONNECT and/or START the VMWare Image over the network.
+Did you catch the difference?  VMWare Workstation starts the Virtual machine, VMWare Server lets you control Virtual machines &lt;span style=&quot;font-weight:bold;&quot;&gt;over the wire&lt;/span&gt;!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Yeah, this has been around awhile, but that’s both the fun and fear of technology - you just can’t get exposure to it all!&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Strict Types, good thing</title>
+      <link>http://programmer.brettveenstra.com/2006/08/11/strict-types-good-thing/</link>
+      <pubDate>Fri, 11  Aug 2006 07:52:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/08/11/strict-types-good-thing/</guid>
+      <author></author>
+      <description>&lt;p&gt;Ok, so C# transformation of an existing VB.NET project isn’t quite as “smooth” as I would like, but &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;it brings benefits of drilling in the whole “;” syntax.&lt;/p&gt;
+&lt;p&gt;Also what comes to a screaming head is the fact that in VB.NET you can get away with a lot under “normal” circumstances.  You know, the one where you don’t declare “Option Strict On”.  So porting to C#, the compiler conditionally complains of things like:
+&lt;code&gt;Cannot implicitly convert type &amp;#39;int&amp;#39; to &amp;#39;string&amp;#39;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Currently, I’m telling it what to do:&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&quot;lang-CS&quot;&gt;foo.ToString();
+&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Specifically telling computers what to do is an inherently good thing for programmers.  Especially if you’re a control freak like me.  Another “good thing” - touch-typing.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>NTLM in Firefox</title>
+      <link>http://programmer.brettveenstra.com/2006/05/18/ntlm-in-firefox/</link>
+      <pubDate>Thu, 18 May 2006 13:53:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/05/18/ntlm-in-firefox/</guid>
+      <author></author>
+      <description>&lt;p&gt;I mean I loved Firefox before this, but as is the case in the technology field, you sometimes &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;miss great stuff!&lt;/p&gt;
+&lt;p&gt;Have a windows box that you want to do NTLM against in Firefox?  Try this out!&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Type “about:config” in your FireFox Address Bar&lt;/li&gt;
+&lt;li&gt;Edit the value for “network.automatic-ntlm-auth.trusted-uris”&lt;/li&gt;
+&lt;li&gt;Add a comma separated list of values for the servers you want to NTLM against.  For example (“localhost, us.mycompany.com”)
+Just plain nuts.  &lt;strong&gt;My last reason for using IE just vanished.&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
+    <item>
+      <title>ASP.NET Page event basics</title>
+      <link>http://programmer.brettveenstra.com/2006/05/17/asp-net-page-event-basics/</link>
+      <pubDate>Wed, 17 May 2006 14:26:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/05/17/asp-net-page-event-basics/</guid>
+      <author></author>
+      <description>&lt;p&gt;In ASP.NET 1.1 there are four major events that fire for the Page class (&lt;code&gt;System.Web.UI.Page&lt;/code&gt;).  Here’s a &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;hack of an explanation:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;Init&lt;/code&gt; - page class is instantiated in ASP.NET worker process.  Advisable to instantiate private members of your class here but hold off on much else as the web UI controls can get modified in later events&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Load&lt;/code&gt; - ControlTree is created, all PostBack data has already been posted to the controls, all ViewState has been processed, this is the place to rearrange controls, visibility and dynamically create controls&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;PreRender&lt;/code&gt; - last chance to alter web controls - &lt;strong&gt;you cannot &lt;/strong&gt;OVERRIDE this event&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Unload&lt;/code&gt; - output has been written, and you’re just doing cleanup now&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;For a detailed discussion into all ten, check out &lt;a href=&quot;http://www.15seconds.com/issue/020102.htm&quot;&gt;4GuysFromRolla.com&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Browser War?</title>
+      <link>http://programmer.brettveenstra.com/2006/05/13/browser-war/</link>
+      <pubDate>Sat, 13 May 2006 02:10:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/05/13/browser-war/</guid>
+      <author></author>
+      <description>&lt;p&gt;It’s over dude…&lt;/p&gt;
+&lt;p&gt;When Firefox &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;rips through pages without crashing, flickers and other IE “normalities”, it is SO OVER.  I hope I can write software someday that flies like this thing!&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Further up, further in</title>
+      <link>http://programmer.brettveenstra.com/2006/05/12/further-up-further-in/</link>
+      <pubDate>Fri, 12 May 2006 12:22:00 -0400</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/05/12/further-up-further-in/</guid>
+      <author></author>
+      <description>&lt;p&gt;So, having had worked at a great product development company for the past 4 1/2 years in VB6 and only getting to dabble in .NET when I could talk them into it, I’ve &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;finally been blessed with a job that is aligned with my desires in .NET!&lt;/p&gt;
+&lt;p&gt;While I’ve built a handful of solutions, both webform and winform since 2001, they have all been in VB.NET. I’m going to try and push cold turkey and just switch to C#. Why?&lt;/p&gt;
+&lt;p&gt;Here’s what I can come up with:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;C# is “closer” to the .NET Framework - much of .NET framework was in C# and the whole experience is cleaner. I’m a control freak is the bottom line.&lt;/li&gt;
+&lt;li&gt;C# is closer to Javascript - I’m planning on web programming, and jumping in and out of brackets and the like is just something I’m feeling too lazy for&lt;/li&gt;
+&lt;li&gt;C# has huge momentum in the Software Engineering community - having MORE resources by industry experts, not just in the Microsoft camp is how I’d like to build software. Also, it seems that more open source projects run in the C# space than VB.NET (purely subjective).&lt;/li&gt;
+&lt;li&gt;C# in Visual Studio 2k3 has better architect tools (i.e. code comments). Yes I know about the VB.NET add-in.&lt;/li&gt;
+&lt;li&gt;Easier to share, debate - VB.NET still has a hobbyist aura. I’m anything but a hobbyist, but I grow tired of spending time on qualifications when discussing ideas.&lt;/li&gt;
+&lt;li&gt;C# to VB.NET conversion is actually easier to me. Sure, I could read C# and convert to VB.NET. VB.NET does some things during compile time anyway that is more declarative (see #1) and I just don’t want any more tools that hide that stuff.&lt;/li&gt;
+&lt;li&gt;Intellisense wins every time. Since I’m in Visual Studio .NET, it’s not like I’ll have “extra” typing to do.
+Here we go!&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;I promise not to become a &lt;strong&gt;C# biggot&lt;/strong&gt;.&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>Tools for Internet Explorer / HTML</title>
+      <link>http://programmer.brettveenstra.com/2006/01/01/tools-for-internet-explorer-html/</link>
+      <pubDate>Sun, 01 Jan 2006 00:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/01/01/tools-for-internet-explorer-html/</guid>
+      <author></author>
+      <description>&lt;p&gt;Here’s a list of crazy helpful tools for &lt;span class=&quot;more&quot;&gt;&lt;/span&gt;HTML development on the major pain (er, leading browser).&lt;/p&gt;
+&lt;p&gt;Get ‘em now:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.nikhilk.net/ASPNETDevHelperTool.aspx&quot;&gt;Web Development Helper&lt;/a&gt; - Parse ViewState, TraceViewer, nice… this was built by one of the guys on the ASP.NET / ATLAS team at Microsoft [get]&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.blunck.info/iehttpheaders.html&quot;&gt;ieHTTPHeaders &lt;/a&gt;- view HTTP Headers within the browser [&lt;a href=&quot;http://www.blunck.info/ieHTTPHeadersSetup.exe&quot;&gt;get&lt;/a&gt;]&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href=&quot;http://www.microsoft.com/downloads/en/details.aspx?familyid=95E06CBE-4940-4218-B75D-B8856FCED535&amp;amp;displaylang=en&amp;amp;pf=true&quot;&gt;Internet Explorer Developer Toolbar&lt;/a&gt; - official un-supported tool from the big guys themselves
+Watch for these:&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;JavaScript Utilities Project - this is probably the initial cut of ATLAS work&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    <item>
+      <title>.NET Reading List</title>
+      <link>http://programmer.brettveenstra.com/2006/01/01/net-reading-list/</link>
+      <pubDate>Sun, 01 Jan 2006 00:00:00 -0500</pubDate>
+      <guid isPermaLink="true">http://programmer.brettveenstra.com/2006/01/01/net-reading-list/</guid>
+      <author></author>
+      <description>&lt;p&gt;Quick snapshot on the road to continuous improvement…&lt;/p&gt;
+&lt;p&gt;On the nightstand&lt;span class=&quot;more&quot;&gt;&lt;/span&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Essential ASP.NET with Examples in C# (Onion)&lt;/li&gt;
+&lt;li&gt;Framework Design Guidelines (Cwalina, Abrams)&lt;/li&gt;
+&lt;li&gt;.NET Gotchas (Subramaniam)&lt;/li&gt;
+&lt;li&gt;Programming .NET Components (Lowy)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On the bookshelf&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Must Read&lt;/li&gt;
+&lt;li&gt;Short-lived&lt;/li&gt;
+&lt;li&gt;Kindling&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;On the Wish List&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Business Objects in C#&lt;/li&gt;
+&lt;li&gt;Business Objects in C# 2005&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Response to Readability - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Response to Readability</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><span class="caps">JP</span> put out another post <a href="http://blog.jpboodhoo.com/ThoughtsOnReadability.aspx">requesting comments on a Readable (Fluent) approach he’s currently using</a>.</p>
+<p>I tried to leave a comment, but the system <span class="more"></span>wouldn’t accept anything I used for the captcha… so here&nbsp;goes:</p>
+<p><span class="caps">JP</span>&nbsp;writes:</p>
+<pre><code class="lang-cs">Run.the&lt;wire_up_global_error_handling&gt;()
+.then&lt;initialize_the_container_for_the_user_interface&gt;()
+.then&lt;initialize_the_user_interface_registry&gt;()
+.then&lt;initialize_the_ui_images_registry&gt;()
+.then&lt;initialize_the_main_menus&gt;()
+.execute();
+</code></pre>
+<p>Here are my humble&nbsp;comments:</p>
+<ul>
+<li><code>Run</code> <span class="amp">&amp;</span> <code>execute</code> seems&nbsp;redundant</li>
+<li>The underscores are nice to look at but CamelCasing is also easy to read (for me), and easier to type … I suppose if you’re using your <a href="http://blog.jpboodhoo.com/BDDAutoHotKeyScriptUpdateTake2.aspx">AutoHotKey ninja tricks like <span class="caps">JP</span> does</a>, this would be minimum&nbsp;overhead.</li>
+</ul>
+<p>So, for the full comparison in&nbsp;code:</p>
+<pre><code class="lang-cs">Start.by&lt;wireUpGlobalErrorHandling&gt;()
+.and&lt;initializeTheContainerForTheUserInterface&gt;()
+.and&lt;initializeTheUserInterfaceRegistry&gt;()
+.and&lt;initializeTheUiImagesRegistry&gt;()
+.<span class="keyword">finally</span>&lt;initializeTheMainMenus&gt;();
+</code></pre>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

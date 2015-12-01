@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Multiple Views (redux) - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Multiple Views (redux)</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>Jeremy posted an <a href="http://jeremyjarrell.com/archive/2008/02/19/82.aspx">article on retrieving filtered results on collections</a>, using the perennial Animal kingdom example.  Great&nbsp;post.</p>
+<p>As I was looking at this again, it just started looking “smelly”.  First thought<span class="more"></span>, can we do this cleaner with <a href="/2008/02/19/multiple-views-redux/href=%22http://www.google.com/url?sa=t&amp;ct=res&amp;cd=1&amp;url=http%3A%2F%2Fmsdn2.microsoft.com%2Fen-us%2Flibrary%2Fms379564(VS.80).aspx&amp;ei=U0K7R8fwDpOwiAHSj6z5CA&amp;usg=AFQjCNGp2vS4kpeLcGjXWtnM-3-rc8UZ1A&amp;sig2=EqElobu2fgGrPArnFHFUVg">Generics</a>?</p>
+<pre><code>public IEnumerable AnimalsList() where AnimalType:class
+{
+  foreach (IAnimal animal in _animals)
+  {
+    AnimalType testAnimal = animal as AnimalType;
+    if (testAnimal != null)
+      yield return testAnimal;
+  }
+}
+</code></pre><p>Oh yeah… generics are just the coolest&nbsp;thing.</p>
+<p>But, this still smelled to me (I didn’t like all the filter code inside the function).  Sprinkling some functional programming goodness (<a href="http://diditwith.net/PermaLink,guid,a1a76478-03d2-428f-9db6-9cf4e300ea0f.aspx">thank you Dustin</a>), it turned into&nbsp;this.</p>
+<pre><code>public delegate bool FilterAnimalPredicate(System.Type type);
+
+/// snip
+
+public IEnumerable AnimalList(FilterAnimalPredicate filter)
+{
+  foreach (IAnimal animal in _animals)
+  {
+    if (filter(animal.GetType()))
+    {
+      yield return animal;
+    }
+  }
+}
+</code></pre><p>Admittedly, I have cheated … we are no longer using a Property, and hence the unit tests had to change.  But I’d take this approach as it feels much&nbsp;cleaner.</p>
+<p>Thanks again to Jeremy for sparking this&nbsp;post.</p>
+<p>Here’s the final Test&nbsp;Code:</p>
+<pre><code>using System;
+using System.Collections;
+using System.Collections.Generic;
+using MbUnit.Framework;
+
+namespace MultipleIterators.Test
+{
+    [TestFixture]
+    public class ZooTest
+    {
+
+        private static bool IsElephant(System.Type type)
+        {
+            return (type is Elephant);
+        }
+
+        private static bool IsZebra(System.Type type)
+        {
+            return (type is Zebra);
+        }
+
+        [Test]
+        public void Can_add_elephants_to_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Elephant());
+            int animalCounter = 0;
+
+            foreach (IAnimal animal in zoo.Animals){
+                animalCounter++;
+            }
+            Assert.AreEqual(1, animalCounter);
+        }
+
+        [Test]
+        public void Can_add_zebras_to_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            int animalCounter = 0;
+
+            foreach (IAnimal animal in zoo.Animals){
+                animalCounter++;
+            }
+            Assert.AreEqual(1, animalCounter);
+        }
+
+        [Test]
+        public void Can_get_just_the_zebras_out_of_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Zebra zebra in zoo.AnimalsList&lt;Zebra&gt;()){
+                Assert.IsTrue(zebra is Zebra);
+            }
+        }
+
+        [Test]
+        public void Can_get_just_the_elephants_out_of_the_zoo()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Elephant elephant in zoo.AnimalsList&lt;Elephant&gt;()){
+                Assert.IsTrue(elephant is Elephant);
+            }
+        }
+
+        [Test]
+        public void Can_get_just_the_elephants_out_of_the_zoo_using_predicate()
+        {
+            Zoo zoo = new Zoo();
+            zoo.AddAnimal(new Zebra());
+            zoo.AddAnimal(new Elephant());
+
+            foreach (Elephant elephant in zoo.AnimalList(IsElephant)){
+                Assert.IsTrue(elephant is Elephant);
+            }
+        }
+    }
+}
+</code></pre></section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Inconsistent line ending style upon Subversion Import / Commit - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Inconsistent line ending style upon Subversion Import / Commit</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p><em>For posterity and my future sanity (and hopefully this helps the rest of us <span class="caps">SVN</span>-crazy&nbsp;developers).</em></p>
+<p>When doing <span class="caps">IMPORT</span> or COMMIT operations using Subversion, we can <span class="more"></span>receive a message like “Inconsistent line ending&nbsp;style”.</p>
+<p>Particularly when <span class="caps">IMPORTING</span>, this can be a frustrating occurrence, with a host of hints provided online, but I couldn’t find anything but “brute force” approaches of converting EOL symbols by touching each&nbsp;file.</p>
+<p>I use [auto-props] in my svn config file, and this is both part of the problem and the ultimate&nbsp;solution.</p>
+<p>The latest occurrence happened when <span class="caps">IMPORTING</span> several XML files into a Repository.  The confusing part is many of the XML files reported success, and then SVN hit an XML file with a different EOL style than <em>all the others</em>.</p>
+<p>My auto-props entry used to&nbsp;be:</p>
+<pre><code> *.xml = svn:mime-type=text/xml;svn:eol-style=native;svn:keywords=Date Revision
+</code></pre><p>Here’s my solution (svn config&nbsp;file):</p>
+<pre><code>[auto-props]
+*.xml = svn:mime-type=text/xml;svn:eol-style=CRLF;svn:keywords=Date Revision
+
+[miscellany]
+enable-auto-props = yes
+</code></pre><p>Hopefully this helps you out as&nbsp;well.</p>
+<!--dotnetkickit-->
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>

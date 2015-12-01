@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Play Nice CodeRush &amp; SQL Prompt - Journeyman to Master
+    </title>
+    <link rel="alternate" href="http://programmer.brettveenstra.com/feed.xml" type="application/rss+xml" title="One programmer's journey on the path">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic|Anonymous+Pro:400,700,400italic,700italic|Merriweather:400,700,300">
+    <link rel="stylesheet" href="/css/main.css">
+  </head>
+  <body class="article-detail">
+    <header class="header">
+      <div class="content-wrap">
+        <h1>Play Nice CodeRush &amp; SQL Prompt</h1>
+        <p class="author">Written by <span class="author"><a href="mailto:brettveenstra@gmail.com">Brett Veenstra</a></span>
+        </p>
+      </div>
+    </header>
+    <div id="content">
+      <div class="content-wrap">
+        <article class="article">
+          <section class="content"><p>It truly is amazing the tools we can get our hands on these days.   The two that I <span style="text-decoration: line-through;">have a very bad addiction for</span>cannot code without are <a href="http://www.devexpress.com/Products/Visual_Studio_Add-in/Coding_Assistance/index.xml">CodeRush </a>and <a href="https://www.red-gate.com/products/SQL_Prompt/index.htm"><span class="caps">SQL</span> Prompt</a>.</p>
+<p>The only trouble is<span class="more"></span> that when I use <span class="caps">SQL</span> Prompt inside Visual Studio to manage my SQL code, CodeRush tries to hijack the “ESC” key that SQL Prompt uses to cancel it’s own “intellisense”&nbsp;lists.</p>
+<p>While attending the <a href="http://www.dayofdotnet.org/AnnArbor/Fall2007/default.aspx">Day of .Net Fall 2007</a> event on Saturday, I had a chance to bug lead developer on CodeRush <a href="http://diditwith.net/2007/08/01/ItsAllAboutMe.aspx">Dustin Campbell</a> in the middle of his presentation.  Dustin handled me graciously, especially since it was just another “tech support” question… but he didn’t “fix&nbsp;me”.</p>
+<p>With Dustin’s suggestion, I was able to get to the correct place though, thanks&nbsp;Dustin!</p>
+<p>Here’s the&nbsp;solution.</p>
+<ol>
+<li>Choose DevExpress &gt;&nbsp;Options</li>
+<li><span class="caps">IDE</span> \&nbsp;Shortcuts</li>
+<li>DXCore \&nbsp;Support</li>
+<li>Esc (MarkerCollect&nbsp;command)</li>
+<li>Choose only the Languages that <span class="caps">ESC</span> should collect the markers on (my case: C#, VB, XML/HTML, C++)
+Here’s what it looks like when you’re done.
+<a href="http://www.flickr.com/photos/brettveenstra/1692075362/" title="Photo Sharing"><img src="http://farm3.static.flickr.com/2400/1692075362_d17c0ef298.jpg" alt="CodeRushSQLPromptPlayNice"></a></li>
+</ol>
+</section>
+        </article>
+      </div>
+    </div>
+    <footer>
+      <div class="content-wrap">
+        <div class="nav"><a href="/">« Full blog</a></div>
+        <section class="about">
+        </section>
+        <section class="copy">
+          <p>&copy; 2015 Brett Veenstra &mdash; powered by&nbsp;<a href="https://github.com/jnordberg/wintersmith">Wintersmith</a>
+          </p>
+        </section>
+      </div>
+    </footer>
+  </body>
+</html>
